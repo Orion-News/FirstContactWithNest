@@ -7,7 +7,6 @@ import {
   Put,
   Delete,
   Body,
-  HttpCode,
   HttpStatus,
   Res,
 } from '@nestjs/common';
@@ -22,8 +21,8 @@ const addID = () => {
 @Controller('courses')
 export class CoursesController {
   @Get('Index')
-  findAll() {
-    return arr;
+  findAll(@Res() response) {
+    return response.status(HttpStatus.OK).json(arr);
   }
 
   @Post('Register')
