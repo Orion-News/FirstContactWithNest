@@ -23,7 +23,7 @@ export class CoursesController {
   }
 
   @Get('Show/:id')
-  show(@Param() params): object {
+  findOne(@Param() params): object {
     const show = arr.find((x) => {
       return String(x.id) === String(params.id);
     });
@@ -52,10 +52,10 @@ export class CoursesController {
   }
 
   @Delete('Destroy/:id')
-  destroy(@Param() params): string {
+  destroy(@Param('id') id: string): string {
     const d = arr.findIndex((x) => {
-      if (String(x.id) === String(params.id)) {
-        return String(x.id) === String(params.id);
+      if (String(x.id) === String(id)) {
+        return String(x.id) === String(id);
       }
       return `Não existe esse maluko ai meu chegado`;
     });
