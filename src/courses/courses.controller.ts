@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Req, Param, Put, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Req,
+  Param,
+  Put,
+  Delete,
+  Body,
+} from '@nestjs/common';
 
 const arr = [];
 let id = 1;
@@ -15,8 +24,8 @@ export class CoursesController {
   }
 
   @Post('Register')
-  create(@Req() request): string {
-    const data = request.body.data;
+  create(@Body() body) {
+    const data = body.data;
     data.id = addID();
     const created = arr.push(data);
     return `insert value with succed, this value: ${created}`;
