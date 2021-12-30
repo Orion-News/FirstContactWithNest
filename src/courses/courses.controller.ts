@@ -7,6 +7,9 @@ import {
   Put,
   Delete,
   Body,
+  HttpCode,
+  HttpStatus,
+  Res,
 } from '@nestjs/common';
 
 const arr = [];
@@ -24,19 +27,20 @@ export class CoursesController {
   }
 
   @Post('Register')
-  create(@Body() body) {
+  // @HttpCode(HttpStatus.NO_CONTENT)
+  create(@Body() body, @Res() response) {
     const data = body.data;
     data.id = addID();
-    const created = arr.push(data);
-    return `insert value with succed, this value: ${created}`;
+    arr.push(data);
+    return response.status(HttpStatus.OK).json(data);
   }
 
   @Get('Show/:id')
-  findOne(@Param() params): object {
+  findOne(@Param() params, @Res() response): object {
     const show = arr.find((x) => {
       return String(x.id) === String(params.id);
     });
-    return show;
+    return response.status(HttpStatus.OK).json(show);
   }
 
   @Put('Update/:id')
