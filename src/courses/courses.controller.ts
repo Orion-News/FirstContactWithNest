@@ -44,7 +44,7 @@ export class CoursesController {
   }
 
   @Put('Update/:id')
-  update(@Param() params, @Req() request): object {
+  update(@Param() params, @Req() request, @Res() response): object {
     const { data } = request.body;
     const ivd = arr.find((x) => {
       return String(x.id) === String(params.id);
@@ -61,11 +61,11 @@ export class CoursesController {
     ivd.email = data.email;
     ivd.password = data.password;
 
-    return ivd;
+    return response.status(HttpStatus.OK).json(ivd);
   }
 
   @Delete('Destroy/:id')
-  destroy(@Param('id') id: string): string {
+  destroy(@Param('id') id: string, @Res() response): string {
     const d = arr.findIndex((x) => {
       if (String(x.id) === String(id)) {
         return String(x.id) === String(id);
@@ -74,6 +74,6 @@ export class CoursesController {
     });
 
     arr.splice(d);
-    return `Removeu meu Chegado`;
+    return response.status().send(`Removeu o id ${id}, meu Chegado`);
   }
 }
