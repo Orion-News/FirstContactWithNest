@@ -9,6 +9,7 @@ import {
   Body,
   HttpStatus,
   Res,
+  HttpCode,
 } from '@nestjs/common';
 
 const arr = [];
@@ -18,31 +19,44 @@ const addID = () => {
   return id++;
 };
 
+const dataNew = (data) => {
+  return {
+    id: addID(),
+    ...data,
+    created_at: new Date(),
+    atualizar_at: new Date(),
+  };
+};
+
 @Controller('courses')
 export class CoursesController {
-  @Get('Index')
+  @Get()
   findAll(@Res() response) {
     return response.status(HttpStatus.OK).json(arr);
   }
 
-  @Post('Register')
-  // @HttpCode(HttpStatus.NO_CONTENT)
-  create(@Body() body, @Res() response) {
+  @Post()
+  @HttpCode(HttpStatus.NO_CONTENT)
+  create(@Body() body) {
     const data = body.data;
-    data.id = addID();
-    arr.push(data);
-    return response.status(HttpStatus.OK).json(data);
+    arr.push(dataNew(data));
+    // return response.status(HttpStatus.OK).json(data);
   }
 
-  @Get('Show/:id')
+  @Get(':id')
   findOne(@Param() params, @Res() response): object {
+    if (!id) {
+      return {
+        message: `not found courses`,
+      };
+    }
     const show = arr.find((x) => {
       return String(x.id) === String(params.id);
     });
     return response.status(HttpStatus.OK).json(show);
   }
 
-  @Put('Update/:id')
+  @Put(':id')
   update(@Param() params, @Req() request, @Res() response): object {
     const { data } = request.body;
     const ivd = arr.find((x) => {
@@ -63,7 +77,7 @@ export class CoursesController {
     return response.status(HttpStatus.OK).json(ivd);
   }
 
-  @Delete('Destroy/:id')
+  @Delete(':id')
   destroy(@Param('id') id: string, @Res() response): string {
     const d = arr.findIndex((x) => {
       if (String(x.id) === String(id)) {
