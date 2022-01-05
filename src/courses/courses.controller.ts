@@ -12,8 +12,6 @@ import {
   HttpCode,
   Patch,
 } from '@nestjs/common';
-import { response } from 'express';
-import { request } from 'http';
 
 const arr = [];
 let id = 1;
@@ -59,7 +57,7 @@ export class CoursesController {
     return response.status(HttpStatus.OK).json(show);
   }
 
-  @Patch()
+  @Patch('updated/:id')
   updated(@Param('id') id: string, @Body() body) {
     return `return data of body: ${body} and id: ${id}`;
   }
@@ -86,7 +84,7 @@ export class CoursesController {
   }
 
   @Delete(':id')
-  destroy(@Param('id') id: string, @Res() response): string {
+  remove(@Param('id') id: string, @Res() response): string {
     const d = arr.findIndex((x) => {
       if (String(x.id) === String(id)) {
         return String(x.id) === String(id);
