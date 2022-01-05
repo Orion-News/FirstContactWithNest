@@ -10,7 +10,10 @@ import {
   HttpStatus,
   Res,
   HttpCode,
+  Patch,
 } from '@nestjs/common';
+import { response } from 'express';
+import { request } from 'http';
 
 const arr = [];
 let id = 1;
@@ -54,6 +57,11 @@ export class CoursesController {
       return String(x.id) === String(params.id);
     });
     return response.status(HttpStatus.OK).json(show);
+  }
+
+  @Patch()
+  updated(@Param('id') id: string, @Body() body) {
+    return `return data of body: ${body} and id: ${id}`;
   }
 
   @Put(':id')
