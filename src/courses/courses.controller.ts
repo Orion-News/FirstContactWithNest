@@ -29,6 +29,15 @@ const dataNew = (data) => {
   };
 };
 
+const validateEmail = (data) => {
+  return arr.find((x) => {
+    if(String(x.email) === String(data.email)) {
+      return true
+    }
+    return false
+  });
+}; 
+
 @Controller('courses')
 export class CoursesController {
   @Get()
@@ -38,10 +47,22 @@ export class CoursesController {
 
   @Post()
   @HttpCode(HttpStatus.NO_CONTENT)
-  create(@Body() body) {
-    const data = body.data;
+  create(@Body() body, @Res() response) {
+    const { data } = body;
+
+    if(validateEmail(data)) {
+      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: 'Email já cadastrado'
+      });
+    }
+    
     arr.push(dataNew(data));
-    // return response.status(HttpStatus.OK).json(data);
+
+    return response.status(HttpStatus.OK).json({
+      status: HttpStatus.OK,
+      message: 'Operation Sucess'
+    });
   }
 
   @Get(':id')
